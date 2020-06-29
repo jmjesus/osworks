@@ -1,6 +1,5 @@
 package com.algaworks.osworks.osworksapi.domain.model;
 
-import com.algaworks.osworks.osworksapi.domain.ValidationGroups;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Cliente {
     
-    @NotNull(groups = ValidationGroups.ClienteId.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

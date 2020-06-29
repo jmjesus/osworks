@@ -1,5 +1,6 @@
 package com.algaworks.osworks.osworksapi.api.exceptionhandler;
 
+import com.algaworks.osworks.osworksapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.osworks.osworksapi.domain.exception.NegocioException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -23,8 +24,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
     
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handleEntidadeNaoEncontrada(NegocioException ex, WebRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+        
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(OffsetDateTime.now());
+        
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
+    
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<Object>  handleNegocio(NegocioException ex, WebRequest request) {
+    public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         
         var problema = new Problema();
